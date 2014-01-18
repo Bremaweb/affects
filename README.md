@@ -3,6 +3,7 @@ Affects
 This adds an API to easily affect players in various ways, both positive and negative.
 
 Depends: whoison ( https://github.com/bremaweb/whoison )
+License: WTFPL
 
 Functions
 
