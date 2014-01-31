@@ -18,4 +18,7 @@ affects.loadAffects()
 
 minetest.register_privilege("affects", "Player can use the affects chat commands.")
 
-
+minetest.register_on_shutdown(function()
+	affects.saveAffects()
+end
+)

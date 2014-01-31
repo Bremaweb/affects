@@ -9,10 +9,11 @@ function affects.registerAffect( aDef )
 	if ( #aDef.stages < 1 ) then
 		return false
 	end
-	
-	-- TODO add more checks here to ensure the affect definition won't crash the server
+		
+	-- TODO add more checks here to ensure the affect definition won't crash the server	
 	
 	affects._affects[aDef.affectid] = aDef
+	
 end
 
 function affects.removeAffect(name, affectid)
@@ -39,6 +40,7 @@ function affects.affectPlayer(name, affectid)
 	
 	if ( affects._affectedPlayers[name][affectid] == nil ) then
 		if ( affects._affects[affectid] ~= nil ) then
+			whoison.updateStats(name)
 			local ns = ( whoison.getTimeOnline(name) + affects._affects[affectid].stages[1].time )
 			affects._affectedPlayers[name][affectid] = { stage = 1, nextStage = ns, ran=false }
 			applyAffect(name,affectid)

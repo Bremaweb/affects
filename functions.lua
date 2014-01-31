@@ -1,17 +1,21 @@
 function applyAffect(name,affectid)
 	minetest.log("action","Applying affect "..affectid.." on "..name)
+	whoison.updateStats(name)
 	local player = minetest.get_player_by_name(name)	
 	
 	local oStage = affects._affectedPlayers[name][affectid].stage
 	-- see if they need advanced into the next stage	
-	if ( affects._affectedPlayers[name][affectid].nextStage < whoison.getTimeOnline(name) ) then		
-		affects._affectedPlayers[name][affectid].stage = affects._affectedPlayers[name][affectid].stage + 1
+	if ( affects._affectedPlayers[name][affectid].nextStage < whoison.getTimeOnline(name) ) then
+		local nextStageNum = affects._affectedPlayers[name][affectid].stage + 1
+		affects._affectedPlayers[name][affectid].stage = nextStageNum
 		affects._affectedPlayers[name][affectid].ran = false
-		if ( #affects._affects[affectid].stages < affects._affectedPlayers[name][affectid].stage ) then
+		minetest.log("action","Advancing "..affectid.." to the next stage for "..name)
+		if ( #affects._affects[affectid].stages < nextStageNum ) then
 			minetest.log("action","Affect "..affectid.." has worn off of "..name)
 			affects.removeAffect(name,affectid)
 			return
-		end
+		end		
+		affects._affectedPlayers[name][affectid].nextStage = (whoison.getTimeOnline(name) + affects._affects[affectid].stages[nextStageNum].time)
 	end
 	
 	local iStage = affects._affectedPlayers[name][affectid].stage
